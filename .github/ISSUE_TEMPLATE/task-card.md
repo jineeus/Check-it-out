@@ -18,7 +18,7 @@ assignees: ''
 
 ## Task Card 
 
-**Assignee** : (본명)
+**Assignee** : LeeHyojin
 
 #### Job Description
 >  작업 내용을 적어주세요
