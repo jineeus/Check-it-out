@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 // import GoalSet from './GoalSet';
 import "antd/dist/antd.css";
+import HeaderNav from '../components/HeaderNav'
 
 const App = () => {
 
@@ -12,6 +13,7 @@ const App = () => {
 
   return (
     <Router>
+      <Route path="/" component={HeaderNav}/>
       <Route
         exact
         path="/"

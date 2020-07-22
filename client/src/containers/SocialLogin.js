@@ -5,29 +5,39 @@ import './SocialLogin.css';
 import { useDispatch } from "react-redux";
 import { loginAction } from "../modules/login";
 import KaKaoLogin from "react-kakao-login";
+import { useSelector } from "react-redux";
 
 const SocialLogin = () => {
 
   const dispatch = useDispatch();
+  const loginUser = useSelector((state) => state.login, []);
 
-  const responseGoogle = (data) => {
-    // 로그인 성공 시 state에 값 넣기
+  const responseGoogle = (res) => {
     dispatch(loginAction({
-      id: data.googleId,
-      name: data.profileObj.name,
+      id: res.googleId,
+      name: res.profileObj.name,
       provider: 'google'
     }));
+    doSignUpDataInSessionStorage();
   };
 
-  const responseKaKao = (res) => {
-    dispatch(
-      loginAction({
-        id: res.response.access_token,
-        name: res.profile.properties.nickname,
-        provider: "kakao",
-      })
-    );
+  const doSignUpDataInSessionStorage = () => {
+    if(loginUser.signUpData !== null){
+      window.sessionStorage.setItem("id", loginUser.signUpData.id);
+      window.sessionStorage.setItem("name", loginUser.signUpData.name);
+      window.sessionStorage.setItem("provider", loginUser.signUpData.provider); 
+    }
   };
+
+  // const responseKaKao = (res) => {
+  //   dispatch(
+  //     loginAction({
+  //       id: res.response.access_token,
+  //       name: res.profile.properties.nickname,
+  //       provider: "kakao",
+  //     })
+  //   );
+  // };
 
   return (
     <div className="socialLogin" id="componentWrapper">
@@ -54,13 +64,13 @@ const SocialLogin = () => {
             </button>
           )}
         />
-        <KaKaoLogin
+        {/* <KaKaoLogin
           className="kakaoLoginBtn"
           jsKey={KAKAO_API_KEY}
           buttonText="Kakao Login"
           onSuccess={responseKaKao}
           getProfile={true}
-        />
+        /> */}
       </section>
     </div>
   );
