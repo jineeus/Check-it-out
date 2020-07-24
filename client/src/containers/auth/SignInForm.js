@@ -35,6 +35,9 @@ const SignInForm = ({ history }) => {
     e.preventDefault();
     const { useremail, password } = form;
     dispatch(signin({useremail, password}));
+    if(e.target.className === 'signIn') {
+      history.push("/GoalSet");
+    }
   };
 
   // 첫 렌더링 될 때 form 초기화. 이 작업을 해주지 않았더니 로그인 페이지에서 값을 입력 한 후 다른 페이지로 이동 했다가 다시 돌아오면 값이 유지된 상태로 보임.
@@ -42,27 +45,29 @@ const SignInForm = ({ history }) => {
     dispatch(initializeForm('signin'));
   }, [dispatch]);
 
-  useEffect(() => {
-    if(authError){
-      setError('로그인 실패');
-      return;
-    }
-    if(auth){
-      console.log('성공');
-      dispatch(check());
-    }
-  }, [auth, authError, dispatch]);
+  // useEffect(() => {
+  //   if (authError) {
+  //     setError("로그인 실패");
+  //     return;
+  //   }
+  //   if (auth) {
+  //     console.log("성공", auth);
+  //     // dispatch(check());
+  //     history.push("/GoalSet");
+  //   }
+  // }, [isClicked]);
 
-  useEffect(() => {
-    if(user){
-      history.push('/GoalSet');
-      try {
-        localStorage.setItem('user', JSON.stringify(user));
-      }catch(e){
-        console.log('localStorage is not working');
-      }
-    }
-  }, [history, user]);
+  // useEffect(() => {
+  //   console.log(user)
+  //   if(user){
+  //     // history.push('/GoalSet');
+  //     try {
+  //       localStorage.setItem('user', JSON.stringify(user));
+  //     }catch(e){
+  //       console.log('localStorage is not working');
+  //     }
+  //   }
+  // }, [history, user]);
 
   return (
     <AuthForm
