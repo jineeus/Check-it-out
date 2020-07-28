@@ -11,11 +11,10 @@ const SignInForm = ({ history }) => {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+  const { form, auth, authError } = useSelector(({ auth }) => ({
     form: auth.signin,
     auth: auth.auth,
-    authError: auth.authError,
-    user: user.user,
+    authError: auth.authError
   }));
 
   // input event handler
@@ -36,7 +35,7 @@ const SignInForm = ({ history }) => {
     const { useremail, password } = form;
     dispatch(signin({useremail, password}));
     if(e.target.className === 'signIn') {
-      history.push("/GoalSet");
+      history.push("/Search");
     }
   };
 
@@ -58,16 +57,12 @@ const SignInForm = ({ history }) => {
   // }, [isClicked]);
 
   // useEffect(() => {
-  //   console.log(user)
-  //   if(user){
-  //     // history.push('/GoalSet');
-  //     try {
-  //       localStorage.setItem('user', JSON.stringify(user));
-  //     }catch(e){
-  //       console.log('localStorage is not working');
-  //     }
+  //   try {
+  //     localStorage.setItem('user', JSON.stringify(form.signin.useremail));
+  //   }catch(e){
+  //     console.log('localStorage is not working');
   //   }
-  // }, [history, user]);
+  // }, [history]);
 
   return (
     <AuthForm
