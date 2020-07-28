@@ -7,12 +7,13 @@ import loading from './loading';
 const rootReducer = combineReducers({
   auth,
   loading,
-  user,
+  // user,
 });
 
 export function* rootSaga(){
   // all은 배열안에 있는 여러 사가를 동시에 실행시켜 준다.
-  yield all([authSaga(), userSaga()]);
+  // yield all([authSaga(), userSaga()]);
+  yield all([authSaga()]);
 }
 
 export default rootReducer;

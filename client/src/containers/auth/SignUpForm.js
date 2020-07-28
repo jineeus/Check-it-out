@@ -15,7 +15,7 @@ const SignUpForm = ({history}) => {
     form: auth.signup,
     auth: auth.auth,
     authError: auth.authError,
-    user: user.user
+    // user: user.user
   }));
 
   // input event handler
@@ -51,6 +51,10 @@ const SignUpForm = ({history}) => {
     dispatch(signup({ username, useremail, password }));
     if (e.target.className === "signUp") {
       history.push("/");
+      localStorage.setItem('user', JSON.stringify({
+        username,
+        useremail
+      }));
     }
   };
 

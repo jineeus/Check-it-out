@@ -12,3 +12,6 @@ export const signin = ({ useremail, password }) =>
 
 // 로그인 상태 확인
 export const check = () => client.get("http://localhost:3002/users/signin");
+
+export const bookInfo = ({ bookTitle, bookAuthor, bookDescription, bookRate, report }) => 
+  client.post('http://localhost:3002/', { bookTitle, bookAuthor, bookDescription, bookRate, report });
