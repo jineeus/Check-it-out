@@ -41,13 +41,13 @@ const HeaderNav = () => {
       <Link to="/Search">
         <GoSearch />
       </Link>
-      <Link to="/BookList">
+      <Link to="/MyLibrary">
         <GoListUnordered />
       </Link>
-      <Link to="BookReport">
+      <Link to="/MyReport">
         <BsPencilSquare />
       </Link>
-      <Link to="Setting">
+      <Link to="/Setting">
         <FaRegUser />
       </Link>
     </HeaderNavWrapper>

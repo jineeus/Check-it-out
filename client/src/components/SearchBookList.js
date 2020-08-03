@@ -34,6 +34,8 @@ const BookListWrapper = styled.div`
 const BookList = ({ bookList, clickedBook}) => {
   const [bookInfoConveyModal, setBookInfoConveyModal] = useState({
     title: bookList.title,
+    authors: bookList.authors,
+    contents: bookList.contents,
     thumbnail: bookList.thumbnail,
   })
   return (
