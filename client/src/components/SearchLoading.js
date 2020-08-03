@@ -98,12 +98,12 @@ const SearchLoadingWrapper = styled.div`
 const SearchLoading = () => {
   return (
     <SearchLoadingWrapper>
-      <div class="person">
-        <div class="personHead"></div>
-        <div class="personBody"></div>
-        <div class="personFeet">
-          <div class="foot"></div>
-          <div class="foot"></div>
+      <div className="person">
+        <div className="personHead"></div>
+        <div className="personBody"></div>
+        <div className="personFeet">
+          <div className="foot"></div>
+          <div className="foot"></div>
         </div>
       </div>
       <div className="speech-bubble">검색 언제 해줄거에요..?</div>

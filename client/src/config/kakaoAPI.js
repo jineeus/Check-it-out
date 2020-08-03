@@ -1,1 +1,1 @@
-export const KAKAO_API_KEY = "";
+export const KAKAO_API_KEY = "464239d299d3635c2a036fcd3faf5b16";
