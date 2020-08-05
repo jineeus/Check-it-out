@@ -32,8 +32,8 @@ const SignInForm = ({ history }) => {
   // form submit handler
   const onSubmit = e => {
     e.preventDefault();
-    const { useremail, password } = form;
-    dispatch(signin({useremail, password}));
+    const { userEmail, passWord } = form;
+    dispatch(signin({userEmail, passWord}));
     if(e.target.className === 'signIn') {
       history.push("/Search");
     }

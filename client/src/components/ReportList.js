@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaCheck } from 'react-icons/fa';
 
 const ReportListsWrapper = styled.div`
   position: relative;
@@ -10,7 +10,6 @@ const ReportListsWrapper = styled.div`
   border-radius: 10px;
   margin-top: 3%;
   height: 40%;
-  padding: 2%;
   box-sizing: border-box;
   .reportMessage {
     text-align: left;
@@ -28,7 +27,8 @@ const ReportListsWrapper = styled.div`
     right: 3%;
   }
   .modified,
-  .deleteReport {
+  .deleteReport,
+  .saveReportModified {
     position: absolute;
     top: 10%;
     cursor: pointer;
@@ -45,21 +45,48 @@ const ReportListsWrapper = styled.div`
   }
   .modified {right: 10%;}
   .deleteReport {right: 3%;}
+  .saveReportModified {right: 10%}
+  .reportListTemp {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 2%;
+    border-radius: 10px;
+    &.editing {
+      box-shadow: 0px 6px 6px rgba(0,0,0,.28);
+    }
+  }
 `;
 
-const ReportList = ({reportList}) => {
+const ReportList = ({ reportList, reportSaveHandler, deleteReportHandler}) => {
+  const [clickReportModified, setClickReportModified] = useState(true);
+
+  const inputReadOnlyHandler = () => {
+    const inputEl = document.querySelector('.reportListTemp');
+    setClickReportModified(clickReportModified ? false : true);
+    inputEl.value = inputEl.getAttribute('placeholder');
+  }
+
+  const reportSave = () => {
+    setClickReportModified(clickReportModified ? false : true);
+    const inputEl = document.querySelector('.reportListTemp');
+    reportSaveHandler(inputEl.value, reportList.reportUuid);
+  }
+
   return (
     <ReportListsWrapper>
-      <div className="reportListTemp">
-        <p className="reportMessage">{reportList.memo}</p>
-        <span className="registrationDate">{reportList.date}</span>
-      </div>
-      <button className="modified">
-        <FaPencilAlt />
-      </button>
-      <button className="deleteReport">
-        <RiDeleteBin6Line />
-      </button>
+      <input type="text" placeholder={reportList.reportMemo} className={clickReportModified ? "reportListTemp" : "reportListTemp editing"} readOnly={clickReportModified}/>
+      {clickReportModified ? (
+        <FaPencilAlt className="modified" onClick={() => inputReadOnlyHandler()}/>
+      ) : (
+          <FaCheck className="saveReportModified" onClick={() => reportSave()} />
+      )}
+      <RiDeleteBin6Line className="deleteReport" onClick={() => deleteReportHandler(reportList.reportUuid)}/>
     </ReportListsWrapper>
   );
 };

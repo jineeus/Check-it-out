@@ -21,15 +21,15 @@ export const changeField = createAction(
 
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);  // signup , signin
 
-export const signup = createAction(SIGNUP, ({username, useremail, password }) => ({
-  username,
-  useremail,
-  password,
+export const signup = createAction(SIGNUP, ({userName, userEmail, passWord }) => ({
+  userName,
+  userEmail,
+  passWord,
 }));
 
-export const signin = createAction(SIGNIN, ({useremail, password }) => ({
-  useremail,
-  password,
+export const signin = createAction(SIGNIN, ({userEmail, passWord }) => ({
+  userEmail,
+  passWord,
 }));
 
 // saga 생성
@@ -43,14 +43,14 @@ export function* authSaga(){
 
 const initialState = {
   signup: {
-    username: "",
-    useremail: "",
-    password: "",
-    passwordConfirm: "",
+    userName: "",
+    userEmail: "",
+    passWord: "",
+    passWordConfirm: "",
   },
   signin: {
-    useremail: "",
-    password: "",
+    userEmail: "",
+    passWord: "",
   },
   auth: null,
   authError: null,

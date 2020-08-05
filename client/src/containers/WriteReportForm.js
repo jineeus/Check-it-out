@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReportList from '../components/ReportList';
 import { uuid } from "uuidv4";
 import { Rate } from "antd";
+import { useDispatch, useSelector } from 'react-redux';
+// import { getReportList } from '../lib/api/auth';
+import client from '../lib/api/client';
 
 const WriteReportFormWrapper = styled.div`
   width: 100%;
@@ -35,7 +38,7 @@ const WriteReportFormWrapper = styled.div`
     outline: none;
     font-size: 18px;
     font-weight: 600;
-    width: 30%;
+    width: 40%;
     margin: 5%;
     color: #e91e63;
     padding: 2% 4%;
@@ -120,45 +123,35 @@ const WriteReportFormWrapper = styled.div`
   .reportBtn + .reportBtn {
     margin-left: 10%;
   }
+  .show, .hiding {display: block;}
+  .show {font-size: 24px; font-weight: 600; color: #cfcfcf; line-height: 100px;}
+  .hiding {display: none}
 `;
 
 const WriteReportForm = () => {
 
   const [writeReportClicked, setWriteReportClicked] = useState(false);
-  const [currentBookInfo, setCurrentBookInfo] = useState({
-    title: "미움받을 용기",
-    authors: "기시미 이치로",
-    thumbnail:
-      "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-    rate: 5,
-    report: [
-      {
-        memo:
-          "책을 읽었다책을 읽었다책을 읽었다책을 읽었다책을 읽었다책을 읽었다책을 읽었다책을 읽었다책을 읽었다책을 읽었다",
-        date: "2020-08-01 15:40",
-      },
-      {
-        memo: "재미없다",
-        date: "2020-08-05 18:30",
-      },
-      {
-        memo: "재미없다",
-        date: "2020-08-05 18:30",
-      },
-      {
-        memo: "재미없다",
-        date: "2020-08-05 18:30",
-      },
-      {
-        memo: "재미없다",
-        date: "2020-08-05 18:30",
-      },
-      {
-        memo: "재미없다",
-        date: "2020-08-05 18:30",
-      },
-    ],
-  });
+  const [bookReport, setBookReport] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+  let reportUuidSaved = "";
+
+  let { bookUuid, bookTitle, bookAuthor, bookImage, bookRate } = useSelector((state) => ({
+    bookUuid: state.currentBookList.uuid,
+    bookTitle: state.currentBookList.bookTitle,
+    bookAuthor: state.currentBookList.bookAuthor,
+    bookImage: state.currentBookList.bookImage,
+    bookRate: state.currentBookList.bookRate,
+  }));
+
+  useEffect(() => {
+    client.post('http://localhost:3002/report/getAllReport', { bookUuid }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
+      }
+    })
+    .then(data => setBookReport(data.data))
+  }, [writeReportClicked, deleteModal])
 
   const writeReportHandler = () => {
     setWriteReportClicked(true);
@@ -168,18 +161,45 @@ const WriteReportForm = () => {
     setWriteReportClicked(false);
   }
 
-  const saveReportHandler = () => {
-    // 서버에 독후감 목록 저장
+  const NewReportSaveHandler = () => {
+    let reportMemo = document.querySelector('.writeReportInput').value;
+    let reportUuid = uuid();
+    client.post('http://localhost:3002/report/addReport', { bookUuid, reportUuid, reportMemo }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
+      }
+    })
+    .then(data => setWriteReportClicked(false));
+  }
+
+  const reportSaveHandler = (reportMemo, reportUuid ) => {
+    client.post('http://localhost:3002/report/updateReport', { reportUuid, reportMemo }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
+      }
+    })
+  }
+
+  const deleteReportHandler = (reportUuid) => {
+    client.post('http://localhost:3002/report/deleteReport', { reportUuid }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
+      }
+    })
+    // .then(data => setDeleteModal(true))
   }
 
   return (
     <WriteReportFormWrapper>
       <section className="currentBook">
-        <div className="bookTitle">{currentBookInfo.title}</div>
-        <img className="bookThumbnail" src={currentBookInfo.thumbnail} />
-        <span className="bookAuthors">{currentBookInfo.authors}</span>
+        <div className="bookTitle">{bookTitle}</div>
+        <img className="bookThumbnail" src={bookImage} />
+        <span className="bookAuthors">{bookAuthor}</span>
         <span className="bookRate">
-          <Rate disabled defaultValue={currentBookInfo.rate} />
+          <Rate disabled defaultValue={bookRate} />
         </span>
         <button className="writeReport" onClick={() => writeReportHandler()}>
           독후감 작성
@@ -190,23 +210,23 @@ const WriteReportForm = () => {
         {writeReportClicked ? "Write Here!" : "Report Lists"}
       </strong>
       <section className="reportLists">
-        {currentBookInfo.report.length && !writeReportClicked ? (
-          currentBookInfo.report.map((el) => <ReportList reportList={el} key={uuid()} />)
-        ) : (
+        {bookReport.length !== 0 && !writeReportClicked ? (
+          bookReport.map((el) => <ReportList 
+              reportList={el} key={uuid()} 
+              reportSaveHandler={reportSaveHandler}
+              deleteReportHandler={deleteReportHandler}
+            />)
+        ): (
+          <span className={writeReportClicked ? 'hiding' : 'show'}>작성한 독후감이 없습니다</span>
+        )}
+        {writeReportClicked && (
           <React.Fragment>
             <textarea
               placeholder="여기에 독후감을 작성해주세요!"
               className="writeReportInput"
             />
-            <button className="exit reportBtn" onClick={() => exitHandler()}>
-              취소
-            </button>
-            <button
-              className="saveReport reportBtn"
-              onClick={() => saveReportHandler()}
-            >
-              저장
-            </button>
+            <button className="exit reportBtn" onClick={() => exitHandler()}>취소</button>
+            <button className="saveReport reportBtn" onClick={() => NewReportSaveHandler()}>저장</button>
           </React.Fragment>
         )}
       </section>

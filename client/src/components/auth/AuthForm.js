@@ -74,35 +74,35 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
         {text === "Sign Up" && (
           <InputStyled
             autoComplete="username"
-            name="username"
+            name="userName"
             placeholder="이름"
             onChange={onChange}
-            value={form.username}
+            value={form.userName}
           />
         )}
         <InputStyled
           autoComplete="useremail"
-          name="useremail"
+          name="userEmail"
           placeholder="아이디"
           onChange={onChange}
-          value={form.useremail}
+          value={form.userEmail}
         />
         <InputStyled
           autoComplete="new-password"
-          name="password"
+          name="passWord"
           placeholder="비밀번호"
           type="password"
           onChange={onChange}
-          value={form.password}
+          value={form.passWord}
         />
         {text === "Sign Up" && (
           <InputStyled
             autoComplete="new-password"
-            name="passwordConfirm"
+            name="passWordConfirm"
             placeholder="비밀번호 확인"
             type="password"
             onChange={onChange}
-            value={form.passwordConfirm}
+            value={form.passWordConfirm}
           />
         )}
         {error && <ErrorMessage>{error}</ErrorMessage>}

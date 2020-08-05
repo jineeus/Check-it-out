@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MyReportStack from '../components/MyReportStack';
+import { uuid } from "uuidv4";
 
 const MyReportFormWrapper = styled.div`
   .reportTitle {
@@ -21,7 +22,7 @@ const MyReportForm = () => {
     <MyReportFormWrapper>
       <div className="reportTitle">My Report (3)</div>
       <section className="reportListStack">
-        {dummy.map((el) => <MyReportStack />)}
+        {dummy.map((el) => <MyReportStack key={uuid()}/>)}
       </section>
     </MyReportFormWrapper>
   );

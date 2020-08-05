@@ -102,24 +102,23 @@ const BookListWrapper = styled.div`
   }
 `;
 
-const MyBookList = ({ dummy, bookListClickHandler }) => {
+const MyBookList = ({ myLibrary, bookListClickHandler }) => {
   return (
     <BookListWrapper>
       <div className="cardWrapper">
         <div className="front">
-          <img className="thumbnail_myBook" src={dummy.thumbnail} />
-          <strong className="title_myBook">{dummy.title}</strong>
-          <span className="authors_myBook">{dummy.authors}</span>
+          <img className="thumbnail_myBook" src={myLibrary.bookImage} />
+          <strong className="title_myBook">{myLibrary.bookTitle}</strong>
+          <span className="authors_myBook">{myLibrary.bookAuthor}</span>
           <span className="rate_myBook">
-            <Rate disabled defaultValue={dummy.rate} />
+            <Rate disabled defaultValue={myLibrary.bookRate} />
           </span>
         </div>
-        <div className="back" onClick={() => bookListClickHandler(dummy)}>
+        <div className="back" onClick={() => bookListClickHandler(myLibrary)}>
           <Link to="/WriteReport">
             독후감 작성하기
             <BsPencilSquare />
           </Link>
-          
         </div>
       </div>
     </BookListWrapper>

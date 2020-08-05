@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyBookList from "../components/MyBookList";
 import { uuid } from "uuidv4";
+import { bookListLoad } from '../lib/api/auth';
+import { useDispatch } from "react-redux";
+import { currentBookList } from '../modules/currentBookList';
 
 const MyLibraryFormWrapper = styled.div`
   width: 100%;
@@ -24,81 +27,41 @@ const MyLibraryFormWrapper = styled.div`
 
 const MyLibraryForm = () => {
 
-  const dummy = [
-    {
-      title: "미움받을 용기fdsfdfsfdfsdfsds",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 5,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 2,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 4,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 3,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 5,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 2,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 4,
-    },
-    {
-      title: "미움받을 용기",
-      authors: "기시미 이치로",
-      thumbnail:
-        "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1467038%3Ftimestamp%3D20200729142135",
-      rate: 3,
-    },
-  ];
+  const dispatch = useDispatch();
+
+  const [myLibraryBookLists, setMyLibraryBookLists] = useState(null);
+
+  useEffect(() => {
+    bookListLoad()
+    .then(data => setMyLibraryBookLists(data.data))
+  }, []);
 
   const bookListClickHandler = (item) => {
-    console.log(item)
+    dispatch(currentBookList({
+      uuid: item.uuid,
+      bookTitle: item.bookTitle,
+      bookAuthor: item.bookAuthor,
+      bookImage: item.bookImage,
+      bookRate: item.bookRate,
+    }));
   }
 
   return (
     <MyLibraryFormWrapper>
-      <div className="totalLength">My Library ({dummy.length})</div>
-      <section className="bookList">
-        {dummy.map((el) => (
-          <MyBookList
-            dummy={el}
-            key={uuid()}
-            bookListClickHandler={bookListClickHandler}
-          />
-        ))}
-      </section>
+      {myLibraryBookLists &&
+        <React.Fragment>
+          <div className="totalLength">My Library ({myLibraryBookLists.length})</div>
+          <section className="bookList">
+            {myLibraryBookLists.map((el) => (
+              <MyBookList
+                myLibrary={el}
+                key={uuid()}
+                bookListClickHandler={bookListClickHandler}
+              />
+            ))}
+          </section> 
+        </React.Fragment>
+      }
     </MyLibraryFormWrapper>
   );
 };

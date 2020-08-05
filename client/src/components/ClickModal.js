@@ -46,12 +46,10 @@ const ClickModalWrapper = styled.div`
     color: #9c9c9c;
     cursor: pointer;
   }
-  .btnSection > button > a {color: #9c9c9c;}
   .btnSection > button + button {margin-left: 20px;}
 `;
 
-const ClickModal = ({ clickBook, modalClose }) => {
-
+const ClickModal = ({ clickBook, modalClose, bookRateSave, clickBookInfoModal }) => {
   const [rateValue, setRateValue] = useState(0);
 
   const customIcons = {
@@ -62,22 +60,20 @@ const ClickModal = ({ clickBook, modalClose }) => {
     5: <SmileOutlined />,
   };
 
-  const handleChange = value => {
-    setRateValue(value);
+  const handleChange = (value) => {
+    bookRateSave(value);
   };
-
 
   return (
     <ClickModalWrapper>
-      <img className="modalBookImg" src={clickBook.thumbnail} />
-      <strong className="modalBookTitle">{clickBook.title}</strong>
-      <span className="bookRateMsg">스마일 리뷰</span>
+      <img className="modalBookImg" src={clickBookInfoModal.thumbnail} />
+      <strong className="modalBookTitle">{clickBookInfoModal.title}</strong>
+      <span className="bookRateMsg">평점 남기기</span>
       <Rate onChange={handleChange} />
       <div className="btnSection">
         <button onClick={() => modalClose()}>취소</button>
-        <button onClick={() => modalClose(rateValue)}><Link to="/MyLibrary">저장</Link></button>
+        <button onClick={() => modalClose(rateValue)}>저장</button>
       </div>
-      
     </ClickModalWrapper>
   );
 };
