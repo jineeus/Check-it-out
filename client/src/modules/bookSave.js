@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, { createRequestActionTypes } from "../lib/createRequestSaga";
-import * as authAPI from '../lib/api/auth';
+import * as commonAPI from '../lib/api/commonAPI';
 
 const [BOOK_SAVE] = createRequestActionTypes("bookSave/BOOK_SAVE");
 
@@ -16,7 +16,7 @@ export const bookSave = createAction(
   }),
 );
 
-const bookSaveSaga = createRequestSaga(BOOK_SAVE, authAPI.bookSave);
+const bookSaveSaga = createRequestSaga(BOOK_SAVE, commonAPI.bookSave);
 export function* saveSaga(){
   yield takeLatest(BOOK_SAVE, bookSaveSaga);
 }

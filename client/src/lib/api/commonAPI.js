@@ -22,3 +22,23 @@ export const bookSave = ({ bookUuid, bookTitle, bookAuthor, bookImage, bookRate 
 // 책 정보 불러오기
 export const bookListLoad = () => 
   client.get('http://localhost:3002/myLibrary/getAllBooks')
+
+// 클릭한 책에 대한 독후감 불러오기
+export const clickBookReportLoad = ({ bookUuid }) => 
+  client.post("http://localhost:3002/report/getAllReport", { bookUuid });
+
+// 새 독후감 저장
+export const newReportSave = ({ bookUuid, reportUuid, reportMemo }) => 
+  client.post('http://localhost:3002/report/addReport', { bookUuid, reportUuid, reportMemo });
+
+// 독후감 수정 
+export const reportUpdateSave = ({ reportUuid, reportMemo }) => 
+  client.post('http://localhost:3002/report/updateReport', { reportUuid, reportMemo })
+
+// 독후감 삭제
+export const reportDelete = ({ reportUuid }) =>
+  client.post('http://localhost:3002/report/deleteReport', { reportUuid })
+  
+// 책 삭제
+export const bookDelete = ({ bookUuid }) =>
+  client.post('http://localhost:3002/myLibrary/deleteBooks', { bookUuid })

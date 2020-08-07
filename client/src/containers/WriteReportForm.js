@@ -6,7 +6,7 @@ import { uuid } from "uuidv4";
 import { Rate } from "antd";
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import client from '../lib/api/client';
+import { clickBookReportLoad, newReportSave, reportUpdateSave, reportDelete, bookDelete } from "../lib/api/commonAPI";
 import { modalBG } from '../modules/modalBG';
 
 const WriteReportFormWrapper = styled.div`
@@ -154,8 +154,8 @@ const WriteReportForm = ({ history }) => {
   }));
 
   useEffect(() => {
-    client.post('http://localhost:3002/report/getAllReport', { bookUuid })
-    .then(data => setBookReport(data.data))
+    clickBookReportLoad({bookUuid})
+      .then(data => setBookReport(data.data))
   }, [writeReportClicked, deleteConfirmModal])
 
   const writeReportHandler = () => {
@@ -169,12 +169,12 @@ const WriteReportForm = ({ history }) => {
   const NewReportSaveHandler = () => {
     let reportMemo = document.querySelector('.writeReportInput').value;
     let reportUuid = uuid();
-    client.post('http://localhost:3002/report/addReport', { bookUuid, reportUuid, reportMemo })
+    newReportSave({ bookUuid, reportUuid, reportMemo })
     .then(data => setWriteReportClicked(false));
   }
 
   const reportSaveHandler = (reportMemo, reportUuid ) => {
-    client.post('http://localhost:3002/report/updateReport', { reportUuid, reportMemo })
+    reportUpdateSave({ reportUuid, reportMemo });
   }
 
   const deleteReportHandler = (deleteBook, reportUuid) => {
@@ -189,7 +189,7 @@ const WriteReportForm = ({ history }) => {
   const deleteConfirmModalHandler = (bool) => {
     if (deleteConfirmModal.deleteTarget === 'deleteReport'){
       if(bool){
-        client.post('http://localhost:3002/report/deleteReport', { reportUuid })
+        reportDelete({ reportUuid })
           .then(data => setDeleteConfirmModal(false), dispatch(modalBG(false)))
       }else {
         setDeleteConfirmModal(bool)
@@ -197,7 +197,7 @@ const WriteReportForm = ({ history }) => {
       }
     } else if (deleteConfirmModal.deleteTarget === 'deleteBook'){
       if (bool) {
-        client.post('http://localhost:3002/myLibrary/deleteBooks', { bookUuid })
+        bookDelete({ bookUuid })
           .then(data => setDeleteConfirmModal(false), dispatch(modalBG(false)), history.push('/MyLibrary'))
       } else {
         setDeleteConfirmModal(bool)

@@ -5,7 +5,6 @@ import { uuid } from "uuidv4";
 import { useDispatch } from "react-redux";
 import { currentBookList } from '../modules/currentBookList';
 import client from '../lib/api/client';
-import { render } from '@testing-library/react';
 
 const MyReportFormWrapper = styled.div`
   width:100%;
@@ -40,8 +39,10 @@ const MyReportForm = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    client.get('http://localhost:3002/report/theBooksWithReport')
-      .then(data => setTheBooksWithReport(data.data))
+    client
+      .get("http://localhost:3002/report/theBooksWithReport")
+      .then((data) => setTheBooksWithReport(data.data))
+      .catch((err) => setError('작성한 독후감이 없습니다 !'));
   }, [])
 
   const bookListClickHandler = (item) => {
@@ -64,7 +65,7 @@ const MyReportForm = () => {
             </section>
           </React.Fragment>
         ):(
-          <span className="noReportMessage">작성한 독후감이 없습니다</span>
+          <span className="noReportMessage">{error}</span>
         )
       }
     </MyReportFormWrapper>
