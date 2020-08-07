@@ -8,8 +8,8 @@ const CURRENT_BOOKLIST = "bookSave/CURRENT_BOOKLIST";
 
 export const currentBookList = createAction(
   CURRENT_BOOKLIST, 
-  ({ uuid, bookTitle, bookAuthor, bookImage, bookRate }) => ({ 
-    uuid, 
+  ({ bookUuid, bookTitle, bookAuthor, bookImage, bookRate }) => ({ 
+    bookUuid, 
     bookTitle, 
     bookAuthor, 
     bookImage, 
@@ -17,14 +17,8 @@ export const currentBookList = createAction(
   }),
 );
 
-// const bookLoadSaga = createRequestSaga(CURRENT_BOOKLIST, authAPI.bookListLoad);
-
-// export function* bookListSaga(){
-//   yield takeLatest(CURRENT_BOOKLIST, bookLoadSaga);
-// }
-
 const initialState = {
-  uuid: "",
+  bookUuid: "",
   bookTitle: "",
   bookAuthor: "",
   bookImage: "",
@@ -35,7 +29,7 @@ export const currentBookListAction = handleActions(
   {
     [CURRENT_BOOKLIST]: (state, { payload }) => ({
       ...state,
-      uuid: payload.uuid,
+      bookUuid: payload.bookUuid,
       bookTitle: payload.bookTitle,
       bookAuthor: payload.bookAuthor,
       bookImage: payload.bookImage,

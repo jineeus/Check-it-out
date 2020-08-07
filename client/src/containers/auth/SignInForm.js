@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { changeField, initializeForm, signin } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
-import { check } from '../../modules/user';
 
 const SignInForm = ({ history }) => {
 
@@ -43,26 +42,6 @@ const SignInForm = ({ history }) => {
   useEffect(() => {
     dispatch(initializeForm('signin'));
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (authError) {
-  //     setError("로그인 실패");
-  //     return;
-  //   }
-  //   if (auth) {
-  //     console.log("성공", auth);
-  //     // dispatch(check());
-  //     history.push("/GoalSet");
-  //   }
-  // }, [isClicked]);
-
-  // useEffect(() => {
-  //   try {
-  //     localStorage.setItem('user', JSON.stringify(form.signin.useremail));
-  //   }catch(e){
-  //     console.log('localStorage is not working');
-  //   }
-  // }, [history]);
 
   return (
     <AuthForm

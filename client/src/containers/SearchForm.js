@@ -8,7 +8,7 @@ import SearchLoading from '../components/SearchLoading';
 import ClickModal from '../components/ClickModal';
 import { bookSave } from "../modules/bookSave";
 import { useDispatch, useSelector } from "react-redux";
-// import { withRouter } from 'react-router-dom';
+import { modalBG } from '../modules/modalBG';
 
 const SearchWrapper = styled.div`
   height: 100%;
@@ -109,12 +109,6 @@ const SearchWrapper = styled.div`
     height: 70%;
     padding: 10px;
   } 
-  .modalBg {
-    background: black;
-    opacity: .5;
-    position: absolute;
-    top:0; left: 0; right: 0; bottom: 0;
-  }
 `;
 
 
@@ -130,7 +124,7 @@ const SearchForm = () => {
     bookRate: 0
   });
 
-  const bookTitle  = useSelector((state) => (
+  const {bookTitle}  = useSelector((state) => (
     state.bookSave.bookTitle
   ));
 
@@ -168,21 +162,22 @@ const SearchForm = () => {
 
   const clickedBook = (item) => {
     setClickModal(true);
+    dispatch(modalBG(true));
     setClickBookInfoModal({clickBook: item});
   }
 
   const modalClose = (rate = 0) => {
     dispatch(
       bookSave({
-        uuid: uuid(),
+        bookUuid: uuid(),
         bookTitle: clickBookInfoModal.clickBook.title,
         bookAuthor: clickBookInfoModal.clickBook.authors,
         bookImage: clickBookInfoModal.clickBook.thumbnail,
-        bookRate: clickBookInfoModal.bookRate,
-        report: "",
+        bookRate: clickBookInfoModal.bookRate
       })
     );
-    setClickModal(false)
+    setClickModal(false);
+    dispatch(modalBG(false));
   }
 
   const bookRateSave = (bookRate) => {
@@ -217,7 +212,7 @@ const SearchForm = () => {
           ))
         )}
       </section>
-      {clickModal ? (
+      {clickModal && (
         <div>
           <ClickModal
             clickBook={clickedBook}
@@ -225,9 +220,8 @@ const SearchForm = () => {
             modalClose={modalClose}
             bookRateSave={bookRateSave}
           />
-          <div className="modalBg"></div>
         </div>
-      ) : null}
+      )}
     </SearchWrapper>
   );
 };

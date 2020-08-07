@@ -1,5 +1,4 @@
 import { createAction, handleActions } from "redux-actions";
-import produce from "immer";
 import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, { createRequestActionTypes } from "../lib/createRequestSaga";
 import * as authAPI from '../lib/api/auth';
@@ -8,13 +7,12 @@ const [BOOK_SAVE] = createRequestActionTypes("bookSave/BOOK_SAVE");
 
 export const bookSave = createAction(
   BOOK_SAVE,
-  ({ uuid, bookTitle, bookAuthor, bookImage, bookRate, report }) => ({
-    uuid,
+  ({ bookUuid, bookTitle, bookAuthor, bookImage, bookRate }) => ({
+    bookUuid,
     bookTitle,
     bookAuthor,
     bookImage,
-    bookRate,
-    report
+    bookRate
   }),
 );
 
@@ -24,24 +22,22 @@ export function* saveSaga(){
 }
 
 const initialState = {
-  uuid: "",
+  bookUuid: "",
   bookTitle: "",
   bookAuthor: "",
   bookImage: "",
-  bookRate: "",
-  report: ""
+  bookRate: ""
 };
 
 const bookSaveAction = handleActions(
   {
     [BOOK_SAVE]: (state, { payload }) => ({
       ...state,
-      uuid: payload.uuid,
+      bookUuid: payload.bookUuid,
       bookTitle: payload.bookTitle,
       bookAuthor: payload.bookAuthor,
       bookImage: payload.bookImage,
-      bookRate: payload.bookRate,
-      report: payload.report,
+      bookRate: payload.bookRate
     }),
   },
   initialState

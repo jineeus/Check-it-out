@@ -56,7 +56,6 @@ const initialState = {
   authError: null,
 };
 
-// 로딩에 관련된 상태들은 modules/loading.js 모듈에서 관리하므로 성공과 실패 상태에 대해서만 작성하면 된다.
 
 const auth = handleActions(
   // payload: ... 은 payload로 받아오는 값이 무엇인지 명확하게 작성

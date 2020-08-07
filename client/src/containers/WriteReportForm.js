@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReportList from '../components/ReportList';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 import { uuid } from "uuidv4";
 import { Rate } from "antd";
+import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getReportList } from '../lib/api/auth';
 import client from '../lib/api/client';
+import { modalBG } from '../modules/modalBG';
 
 const WriteReportFormWrapper = styled.div`
   width: 100%;
   height: 100%;
+  position: relative;
   .currentBook {
     width: 100%;
     height: 60%;
@@ -28,6 +31,8 @@ const WriteReportFormWrapper = styled.div`
     width: 25%;
     margin: 5% auto;
   }
+
+  .deleteBook {transition: all 0.3s;}
 
   .writeReport,
   .deleteBook {
@@ -128,15 +133,20 @@ const WriteReportFormWrapper = styled.div`
   .hiding {display: none}
 `;
 
-const WriteReportForm = () => {
+const WriteReportForm = ({ history }) => {
+
+  const dispatch = useDispatch();
 
   const [writeReportClicked, setWriteReportClicked] = useState(false);
   const [bookReport, setBookReport] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
-  let reportUuidSaved = "";
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
+    bool: false,
+    deleteTarget: ""
+  });
+  const [reportUuid, setReportUuid] = useState("");
 
   let { bookUuid, bookTitle, bookAuthor, bookImage, bookRate } = useSelector((state) => ({
-    bookUuid: state.currentBookList.uuid,
+    bookUuid: state.currentBookList.bookUuid,
     bookTitle: state.currentBookList.bookTitle,
     bookAuthor: state.currentBookList.bookAuthor,
     bookImage: state.currentBookList.bookImage,
@@ -144,14 +154,9 @@ const WriteReportForm = () => {
   }));
 
   useEffect(() => {
-    client.post('http://localhost:3002/report/getAllReport', { bookUuid }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
-      }
-    })
+    client.post('http://localhost:3002/report/getAllReport', { bookUuid })
     .then(data => setBookReport(data.data))
-  }, [writeReportClicked, deleteModal])
+  }, [writeReportClicked, deleteConfirmModal])
 
   const writeReportHandler = () => {
     setWriteReportClicked(true);
@@ -164,32 +169,41 @@ const WriteReportForm = () => {
   const NewReportSaveHandler = () => {
     let reportMemo = document.querySelector('.writeReportInput').value;
     let reportUuid = uuid();
-    client.post('http://localhost:3002/report/addReport', { bookUuid, reportUuid, reportMemo }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
-      }
-    })
+    client.post('http://localhost:3002/report/addReport', { bookUuid, reportUuid, reportMemo })
     .then(data => setWriteReportClicked(false));
   }
 
   const reportSaveHandler = (reportMemo, reportUuid ) => {
-    client.post('http://localhost:3002/report/updateReport', { reportUuid, reportMemo }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
-      }
-    })
+    client.post('http://localhost:3002/report/updateReport', { reportUuid, reportMemo })
   }
 
-  const deleteReportHandler = (reportUuid) => {
-    client.post('http://localhost:3002/report/deleteReport', { reportUuid }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken)
+  const deleteReportHandler = (deleteBook, reportUuid) => {
+    setDeleteConfirmModal({
+      bool: true, 
+      deleteTarget: deleteBook,
+    });
+    setReportUuid(reportUuid);
+    dispatch(modalBG(true));
+  }
+
+  const deleteConfirmModalHandler = (bool) => {
+    if (deleteConfirmModal.deleteTarget === 'deleteReport'){
+      if(bool){
+        client.post('http://localhost:3002/report/deleteReport', { reportUuid })
+          .then(data => setDeleteConfirmModal(false), dispatch(modalBG(false)))
+      }else {
+        setDeleteConfirmModal(bool)
+        dispatch(modalBG(false))
       }
-    })
-    // .then(data => setDeleteModal(true))
+    } else if (deleteConfirmModal.deleteTarget === 'deleteBook'){
+      if (bool) {
+        client.post('http://localhost:3002/myLibrary/deleteBooks', { bookUuid })
+          .then(data => setDeleteConfirmModal(false), dispatch(modalBG(false)), history.push('/MyLibrary'))
+      } else {
+        setDeleteConfirmModal(bool)
+        dispatch(modalBG(false))
+      }
+    }
   }
 
   return (
@@ -204,7 +218,7 @@ const WriteReportForm = () => {
         <button className="writeReport" onClick={() => writeReportHandler()}>
           독후감 작성
         </button>
-        <button className="deleteBook">내 서재에서 제거</button>
+        <button className="deleteBook" onClick={() => deleteReportHandler('deleteBook')}>내 서재에서 제거</button>
       </section>
       <strong className="reportListTitle">
         {writeReportClicked ? "Write Here!" : "Report Lists"}
@@ -229,9 +243,10 @@ const WriteReportForm = () => {
             <button className="saveReport reportBtn" onClick={() => NewReportSaveHandler()}>저장</button>
           </React.Fragment>
         )}
+        <DeleteConfirmModal deleteConfirmModal={deleteConfirmModal.bool} deleteConfirmModalHandler={deleteConfirmModalHandler}/>
       </section>
     </WriteReportFormWrapper>
   );
 };
 
-export default WriteReportForm;
+export default withRouter(WriteReportForm);

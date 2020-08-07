@@ -23,6 +23,13 @@ const MyLibraryFormWrapper = styled.div`
     height: 80%;
     padding-top: 10%;
   }
+  .noBookMessage {
+    display: block;
+    font-size: 24px; 
+    font-weight: 600; 
+    color: #cfcfcf; 
+    line-height: 100px;
+  }
 `;
 
 const MyLibraryForm = () => {
@@ -38,7 +45,7 @@ const MyLibraryForm = () => {
 
   const bookListClickHandler = (item) => {
     dispatch(currentBookList({
-      uuid: item.uuid,
+      bookUuid: item.bookUuid,
       bookTitle: item.bookTitle,
       bookAuthor: item.bookAuthor,
       bookImage: item.bookImage,
@@ -48,9 +55,9 @@ const MyLibraryForm = () => {
 
   return (
     <MyLibraryFormWrapper>
+      <div className="totalLength">My Library ({myLibraryBookLists ? myLibraryBookLists.length : 0})</div>
       {myLibraryBookLists &&
         <React.Fragment>
-          <div className="totalLength">My Library ({myLibraryBookLists.length})</div>
           <section className="bookList">
             {myLibraryBookLists.map((el) => (
               <MyBookList
@@ -62,6 +69,7 @@ const MyLibraryForm = () => {
           </section> 
         </React.Fragment>
       }
+      {!myLibraryBookLists && <span className="noBookMessage">작성한 독후감이 없습니다</span>}
     </MyLibraryFormWrapper>
   );
 };

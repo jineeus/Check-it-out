@@ -6,7 +6,7 @@ import SignUp from './pages/SignUp';
 import Search from './pages/Search';
 import MyLibrary from './pages/MyLibrary';
 import MyReport from "./pages/MyReport";
-import Setting from './pages/Setting';
+import MyPage from './pages/MyPage';
 import WriteReport from "./pages/WriteReport";
 import "antd/dist/antd.css";
 
@@ -20,7 +20,7 @@ const App = () => {
         <Route component={Search} path={"/Search"} />
         <Route component={MyLibrary} path={"/MyLibrary"} />
         <Route component={MyReport} path={"/MyReport"} />
-        <Route component={Setting} path={"/Setting"} />
+        <Route component={MyPage} path={"/MyPage"} />
         <Route component={WriteReport} pate={"/WriteReport"} />
       </Switch>
     </div>

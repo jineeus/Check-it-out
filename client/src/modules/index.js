@@ -1,17 +1,15 @@
 import { combineReducers } from 'redux';
 import { all } from 'redux-saga/effects';
 import auth, { authSaga } from './auth';
-import user, { userSaga } from './user';
 import bookSave, { saveSaga } from "./bookSave";
 import currentBookList from './currentBookList';
-import loading from './loading';
+import modalLoading from './modalBG';
 
 const rootReducer = combineReducers({
   auth,
-  loading,
-  // user,
   bookSave,
-  currentBookList
+  currentBookList,
+  modalLoading
 });
 
 export function* rootSaga(){

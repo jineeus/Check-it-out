@@ -86,7 +86,7 @@ const ReportList = ({ reportList, reportSaveHandler, deleteReportHandler}) => {
       ) : (
           <FaCheck className="saveReportModified" onClick={() => reportSave()} />
       )}
-      <RiDeleteBin6Line className="deleteReport" onClick={() => deleteReportHandler(reportList.reportUuid)}/>
+      <RiDeleteBin6Line className="deleteReport" onClick={() => deleteReportHandler('deleteReport',reportList.reportUuid)}/>
     </ReportListsWrapper>
   );
 };

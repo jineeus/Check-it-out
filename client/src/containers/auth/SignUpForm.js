@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, signup } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
-import { check } from '../../modules/user';
 import { withRouter } from 'react-router-dom';
 
 const SignUpForm = ({history}) => {
@@ -11,11 +10,10 @@ const SignUpForm = ({history}) => {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+  const { form, auth, authError } = useSelector(({ auth }) => ({
     form: auth.signup,
     auth: auth.auth,
-    authError: auth.authError,
-    // user: user.user
+    authError: auth.authError
   }));
 
   // input event handler
@@ -51,10 +49,6 @@ const SignUpForm = ({history}) => {
     dispatch(signup({ userName, userEmail, passWord }));
     if (e.target.className === "signUp") {
       history.push("/");
-      localStorage.setItem('user', JSON.stringify({
-        userName,
-        userEmail
-      }));
     }
   };
 
@@ -81,16 +75,6 @@ const SignUpForm = ({history}) => {
   //     history.push("/");
   //   }
   // }, [isSignUpClicked]);
-
-  // // user 값이 잘 설정 되었는지 확인
-  // useEffect(() => {
-  //   console.log('user',user)
-  //   if(user){
-  //     console.log('check api 성공', user);
-  //     // 회원가입에 성공하면 루트 로 이동
-  //     history.push('/');
-  //   }
-  // },[user]);
 
   return (
     <AuthForm
