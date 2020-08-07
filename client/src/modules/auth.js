@@ -21,15 +21,15 @@ export const changeField = createAction(
 
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);  // signup , signin
 
-export const signup = createAction(SIGNUP, ({username, useremail, password }) => ({
-  username,
-  useremail,
-  password,
+export const signup = createAction(SIGNUP, ({userName, userEmail, passWord }) => ({
+  userName,
+  userEmail,
+  passWord,
 }));
 
-export const signin = createAction(SIGNIN, ({useremail, password }) => ({
-  useremail,
-  password,
+export const signin = createAction(SIGNIN, ({userEmail, passWord }) => ({
+  userEmail,
+  passWord,
 }));
 
 // saga 생성
@@ -43,20 +43,19 @@ export function* authSaga(){
 
 const initialState = {
   signup: {
-    username: "",
-    useremail: "",
-    password: "",
-    passwordConfirm: "",
+    userName: "",
+    userEmail: "",
+    passWord: "",
+    passWordConfirm: "",
   },
   signin: {
-    useremail: "",
-    password: "",
+    userEmail: "",
+    passWord: "",
   },
   auth: null,
   authError: null,
 };
 
-// 로딩에 관련된 상태들은 modules/loading.js 모듈에서 관리하므로 성공과 실패 상태에 대해서만 작성하면 된다.
 
 const auth = handleActions(
   // payload: ... 은 payload로 받아오는 값이 무엇인지 명확하게 작성

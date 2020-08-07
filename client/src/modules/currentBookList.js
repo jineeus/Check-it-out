@@ -1,25 +1,21 @@
 import { createAction, handleActions } from "redux-actions";
+import produce from "immer";
 import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, { createRequestActionTypes } from "../lib/createRequestSaga";
 import * as authAPI from '../lib/api/auth';
 
-const [BOOK_SAVE] = createRequestActionTypes("bookSave/BOOK_SAVE");
+const CURRENT_BOOKLIST = "bookSave/CURRENT_BOOKLIST";
 
-export const bookSave = createAction(
-  BOOK_SAVE,
-  ({ bookUuid, bookTitle, bookAuthor, bookImage, bookRate }) => ({
-    bookUuid,
-    bookTitle,
-    bookAuthor,
-    bookImage,
-    bookRate
+export const currentBookList = createAction(
+  CURRENT_BOOKLIST, 
+  ({ bookUuid, bookTitle, bookAuthor, bookImage, bookRate }) => ({ 
+    bookUuid, 
+    bookTitle, 
+    bookAuthor, 
+    bookImage, 
+    bookRate,
   }),
 );
-
-const bookSaveSaga = createRequestSaga(BOOK_SAVE, authAPI.bookSave);
-export function* saveSaga(){
-  yield takeLatest(BOOK_SAVE, bookSaveSaga);
-}
 
 const initialState = {
   bookUuid: "",
@@ -29,9 +25,9 @@ const initialState = {
   bookRate: ""
 };
 
-const bookSaveAction = handleActions(
+export const currentBookListAction = handleActions(
   {
-    [BOOK_SAVE]: (state, { payload }) => ({
+    [CURRENT_BOOKLIST]: (state, { payload }) => ({
       ...state,
       bookUuid: payload.bookUuid,
       bookTitle: payload.bookTitle,
@@ -43,4 +39,4 @@ const bookSaveAction = handleActions(
   initialState
 );
 
-export default bookSaveAction;
+export default currentBookListAction;

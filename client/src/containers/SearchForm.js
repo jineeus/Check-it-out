@@ -6,6 +6,9 @@ import { uuid } from "uuidv4";
 import SearchBookList from '../components/SearchBookList';
 import SearchLoading from '../components/SearchLoading';
 import ClickModal from '../components/ClickModal';
+import { bookSave } from "../modules/bookSave";
+import { useDispatch, useSelector } from "react-redux";
+import { modalBG } from '../modules/modalBG';
 
 const SearchWrapper = styled.div`
   height: 100%;
@@ -106,24 +109,24 @@ const SearchWrapper = styled.div`
     height: 70%;
     padding: 10px;
   } 
-  .modalBg {
-    background: black;
-    opacity: .5;
-    position: absolute;
-    top:0; left: 0; right: 0; bottom: 0;
-  }
 `;
 
 
 const SearchForm = () => {
 
+  const dispatch = useDispatch();
+
+  const [clickModal, setClickModal] = useState(false);
   const [bookLists, setBookLists] = useState([]);
   const [checkInSearch, setCheckInSearch] = useState(false);
   const [clickBookInfoModal, setClickBookInfoModal] = useState({
-    click: false,
     clickBook: null,
     bookRate: 0
   });
+
+  const {bookTitle}  = useSelector((state) => (
+    state.bookSave.bookTitle
+  ));
 
   const callApi = (input) => {
     axios.get(`https://dapi.kakao.com/v3/search/book?`, {
@@ -158,18 +161,29 @@ const SearchForm = () => {
   }
 
   const clickedBook = (item) => {
-    setClickBookInfoModal({
-      click: true,
-      clickBook: item
-    });
+    setClickModal(true);
+    dispatch(modalBG(true));
+    setClickBookInfoModal({clickBook: item});
   }
 
   const modalClose = (rate = 0) => {
-    setClickBookInfoModal({
-      click: false,
-      clickBook: clickBookInfoModal.clickBook,
-      bookRate: rate
-    })
+    dispatch(
+      bookSave({
+        bookUuid: uuid(),
+        bookTitle: clickBookInfoModal.clickBook.title,
+        bookAuthor: clickBookInfoModal.clickBook.authors,
+        bookImage: clickBookInfoModal.clickBook.thumbnail,
+        bookRate: clickBookInfoModal.bookRate
+      })
+    );
+    setClickModal(false);
+    dispatch(modalBG(false));
+  }
+
+  const bookRateSave = (bookRate) => {
+    setClickBookInfoModal((prevState) => {
+      return { ...prevState, click: true, bookRate };
+    });
   }
 
   return (
@@ -178,21 +192,36 @@ const SearchForm = () => {
         <span className="question">어떤 책을 읽으셨나요?</span>
         <form className="contentForm" onKeyPress={(e) => setQuery(e)}>
           <input type="text" id="label" className="searchBookInput" />
-          <button type="button" className="searchBookBtn" onClick={() => showInput()}></button>
+          <button
+            type="button"
+            className="searchBookBtn"
+            onClick={() => showInput()}
+          ></button>
         </form>
       </section>
       <section className="bookListSection">
-        {!checkInSearch
-          ? <SearchLoading />
-          : bookLists.map((el) => <SearchBookList bookList={el} key={uuid()} clickedBook={clickedBook} />)}
+        {!checkInSearch ? (
+          <SearchLoading />
+        ) : (
+          bookLists.map((el) => (
+            <SearchBookList
+              bookList={el}
+              key={uuid()}
+              clickedBook={clickedBook}
+            />
+          ))
+        )}
       </section>
-      {clickBookInfoModal.click
-        ? <div>
-          <ClickModal clickBook={clickBookInfoModal.clickBook} modalClose={modalClose} />
-          <div className="modalBg"></div>
+      {clickModal && (
+        <div>
+          <ClickModal
+            clickBook={clickedBook}
+            clickBookInfoModal={clickBookInfoModal.clickBook}
+            modalClose={modalClose}
+            bookRateSave={bookRateSave}
+          />
         </div>
-        : null
-      }
+      )}
     </SearchWrapper>
   );
 };

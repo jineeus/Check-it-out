@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, signup } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
-import { check } from '../../modules/user';
 import { withRouter } from 'react-router-dom';
 
 const SignUpForm = ({history}) => {
@@ -11,11 +10,10 @@ const SignUpForm = ({history}) => {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+  const { form, auth, authError } = useSelector(({ auth }) => ({
     form: auth.signup,
     auth: auth.auth,
-    authError: auth.authError,
-    // user: user.user
+    authError: auth.authError
   }));
 
   // input event handler
@@ -35,26 +33,22 @@ const SignUpForm = ({history}) => {
     // onSubmit 이벤트가 발생했을 때, signup함수에 작성한 값들을 파라미터로 넣어서 액션을 디스패치 해주고
     // 사가에서 API 요청을 처리하고, 이에 대한 결과는 auth/authError를 통해 조회가능
     e.preventDefault();
-    const { username, useremail, password, passwordConfirm } = form;
+    const { userName, userEmail, passWord, passWordConfirm } = form;
     // input 이 하나라도 비어있다면
-    if([username, useremail, password, passwordConfirm].includes('')){
+    if([userName, userEmail, passWord, passWordConfirm].includes('')){
       setError('빈 칸을 모두 입력하세요.');
       return;
     }
     // 비밀번호가 일치하지 않는다면
-    if(password !== passwordConfirm){
+    if(passWord !== passWordConfirm){
       setError('비밀번호가 일치하지 않습니다.')
-      changeField({form: 'signup', key: 'password', value: ''});
-      changeField({form: 'signup', key: 'passwordConfirm', value: ''});
+      changeField({form: 'signup', key: 'passWord', value: ''});
+      changeField({form: 'signup', key: 'passWordConfirm', value: ''});
       return;
     }
-    dispatch(signup({ username, useremail, password }));
+    dispatch(signup({ userName, userEmail, passWord }));
     if (e.target.className === "signUp") {
       history.push("/");
-      localStorage.setItem('user', JSON.stringify({
-        username,
-        useremail
-      }));
     }
   };
 
@@ -81,16 +75,6 @@ const SignUpForm = ({history}) => {
   //     history.push("/");
   //   }
   // }, [isSignUpClicked]);
-
-  // // user 값이 잘 설정 되었는지 확인
-  // useEffect(() => {
-  //   console.log('user',user)
-  //   if(user){
-  //     console.log('check api 성공', user);
-  //     // 회원가입에 성공하면 루트 로 이동
-  //     history.push('/');
-  //   }
-  // },[user]);
 
   return (
     <AuthForm

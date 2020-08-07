@@ -47,7 +47,7 @@ const HeaderNav = () => {
       <Link to="/MyReport">
         <BsPencilSquare />
       </Link>
-      <Link to="/Setting">
+      <Link to="/MyPage">
         <FaRegUser />
       </Link>
     </HeaderNavWrapper>

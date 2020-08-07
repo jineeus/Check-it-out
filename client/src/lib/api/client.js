@@ -2,6 +2,8 @@ import axios from "axios";
 
 const client = axios.create();
 
+client.defaults.headers.common['auth-token'] = JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken);
+
 /*
   글로벌 설정 예시:
   
