@@ -20,7 +20,8 @@ const WriteReportFormWrapper = styled.div`
   .bookTitle {
     font-size: 25px;
     font-weight: 600;
-    color: #ffa2a2;
+    color: #f2b1b1;
+    letter-spacing: 1px;
   }
   .bookThumbnail,
   .bookAuthors,
@@ -32,7 +33,9 @@ const WriteReportFormWrapper = styled.div`
     margin: 5% auto;
   }
 
-  .deleteBook {transition: all 0.3s;}
+  .deleteBook {
+    transition: all 0.3s;
+  }
 
   .writeReport,
   .deleteBook {
@@ -128,9 +131,19 @@ const WriteReportFormWrapper = styled.div`
   .reportBtn + .reportBtn {
     margin-left: 10%;
   }
-  .show, .hiding {display: block;}
-  .show {font-size: 24px; font-weight: 600; color: #cfcfcf; line-height: 100px;}
-  .hiding {display: none}
+  .show,
+  .hiding {
+    display: block;
+  }
+  .show {
+    font-size: 24px;
+    font-weight: 600;
+    color: #cfcfcf;
+    line-height: 100px;
+  }
+  .hiding {
+    display: none;
+  }
 `;
 
 const WriteReportForm = ({ history }) => {

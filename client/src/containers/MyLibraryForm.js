@@ -13,7 +13,7 @@ const MyLibraryFormWrapper = styled.div`
   .totalLength {
     font-size: 30px;
     font-weight: 600;
-    color: #ffa2a2;
+    color: #e91e63;
   }
   .bookList {
     text-align: left;
@@ -25,9 +25,9 @@ const MyLibraryFormWrapper = styled.div`
   }
   .noBookMessage {
     display: block;
-    font-size: 24px; 
-    font-weight: 600; 
-    color: #cfcfcf; 
+    font-size: 24px;
+    font-weight: 600;
+    color: #cfcfcf;
     line-height: 100px;
   }
 `;

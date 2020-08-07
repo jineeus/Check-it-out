@@ -21,7 +21,7 @@ const SearchWrapper = styled.div`
   }
   .contentForm {
     position: absolute;
-    top: 20%;
+    top: 25%;
     left: 0;
     height: 100%;
     width: 100%;
@@ -29,12 +29,18 @@ const SearchWrapper = styled.div`
 
   .question {
     display: block;
-    font-size: 17px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
+    color: #e91e63;
   }
 
-  .searchBookInput, .searchBookBtn {position: absolute; top: 5%; right: 10%;}
-  
+  .searchBookInput,
+  .searchBookBtn {
+    position: absolute;
+    top: 5%;
+    right: 10%;
+  }
+
   .searchBookInput {
     width: 50px;
     height: 50px;
@@ -86,8 +92,9 @@ const SearchWrapper = styled.div`
     transition-delay: 0.4s;
   }
 
-  .close:before, .close:after {
-    content: '';
+  .close:before,
+  .close:after {
+    content: "";
     position: absolute;
     width: 27px;
     height: 4px;
@@ -98,17 +105,19 @@ const SearchWrapper = styled.div`
   }
 
   .close:before {
-    transform: rotate(45deg); 
+    transform: rotate(45deg);
     transition: 0.2s ease-in-out;
   }
-  .close:after {transform: rotate(-45deg);}
+  .close:after {
+    transform: rotate(-45deg);
+  }
 
   .bookListSection {
     overflow-y: auto;
     overflow-x: hidden;
     height: 70%;
     padding: 10px;
-  } 
+  }
 `;
 
 

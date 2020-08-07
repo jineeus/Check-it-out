@@ -4,15 +4,15 @@ import MyBookList from '../components/MyBookList';
 import { uuid } from "uuidv4";
 import { useDispatch } from "react-redux";
 import { currentBookList } from '../modules/currentBookList';
-import client from '../lib/api/client';
+import { theBooksWithReport } from "../lib/api/commonAPI";
 
 const MyReportFormWrapper = styled.div`
-  width:100%;
+  width: 100%;
   height: 100%;
   .reportTitle {
     font-size: 30px;
     font-weight: 600;
-    color: #ffa2a2;
+    color: #e91e63;
   }
   .reportListStack {
     text-align: left;
@@ -24,9 +24,9 @@ const MyReportFormWrapper = styled.div`
   }
   .noReportMessage {
     display: block;
-    font-size: 24px; 
-    font-weight: 600; 
-    color: #cfcfcf; 
+    font-size: 24px;
+    font-weight: 600;
+    color: #cfcfcf;
     line-height: 100px;
   }
 `;
@@ -39,10 +39,9 @@ const MyReportForm = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    client
-      .get("http://localhost:3002/report/theBooksWithReport")
+    theBooksWithReport()
       .then((data) => setTheBooksWithReport(data.data))
-      .catch((err) => setError('작성한 독후감이 없습니다 !'));
+      .catch((err) => setError("작성한 독후감이 없습니다 !"));
   }, [])
 
   const bookListClickHandler = (item) => {

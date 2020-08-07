@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 const SearchLoadingWrapper = styled.div`
-/* 사람 */
+  /* 사람 */
   .person {
     width: 200px;
     margin: 20% auto 0;
@@ -13,7 +13,7 @@ const SearchLoadingWrapper = styled.div`
   .personHead {
     width: 70px;
     height: 70px;
-    background: #F9DEEE;
+    background: #f9deee;
     border-radius: 50%;
     animation: body 3s infinite ease-in-out;
   }
@@ -21,11 +21,11 @@ const SearchLoadingWrapper = styled.div`
   .personBody {
     height: 144px;
     width: 62px;
-    background: #F9DEEE;
+    background: #f9deee;
     border-radius: 100% 20% 0 0;
     transform: skewX(-2deg);
     position: relative;
-    left: -50px;  
+    left: -50px;
     animation: body 3s infinite ease-in-out;
   }
 
@@ -41,30 +41,43 @@ const SearchLoadingWrapper = styled.div`
     height: 14px;
     border-radius: 10px 80% 4px 4px;
     transform: skewX(5deg);
-    background-color: #F9DEEE;
+    background-color: #f9deee;
     display: inline-block;
     animation: foot 1.8s infinite ease-in-out;
     &:last-child {
       margin-left: -40px;
-      animation-delay: .9s;
+      animation-delay: 0.9s;
     }
   }
-  
-   @keyframes body {
-    25% {transform: translateY(3px);}
-    50% {transform: translateY(0);}
-    75% {transform: translateY(3px);}
+
+  @keyframes body {
+    25% {
+      transform: translateY(3px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    75% {
+      transform: translateY(3px);
+    }
   }
 
   @keyframes foot {
-    20% {transform: translate3d(34px, -16px, 0) rotate(4deg);} 
-    26% {transform: translate3d(34px, -10px, 4) rotate(0deg);}
-    40% {transform: translate3d(56px, -6px, 0) rotate(-6deg);}
-    44% {transform: translate3d(56px, 0, 0) rotate(0deg);}
-    
+    20% {
+      transform: translate3d(34px, -16px, 0) rotate(4deg);
+    }
+    26% {
+      transform: translate3d(34px, -10px, 4) rotate(0deg);
+    }
+    40% {
+      transform: translate3d(56px, -6px, 0) rotate(-6deg);
+    }
+    44% {
+      transform: translate3d(56px, 0, 0) rotate(0deg);
+    }
   }
 
-/* 말풍선 */
+  /* 말풍선 */
   .speech-bubble {
     position: absolute;
     display: flex;
@@ -74,19 +87,21 @@ const SearchLoadingWrapper = styled.div`
     right: 10%;
     width: 230px;
     height: 100px;
-    background: #F9DEEE;
+    background: #f9deee;
     border-radius: 10px;
-    font-size: 17px;
+    font-size: 18px;
+    font-weight: 600;
     letter-spacing: 1px;
+    color: #ff78a5;
   }
 
   .speech-bubble:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 8%;
     left: 40%;
     border: 50px solid transparent;
-    border-top-color: #F9DEEE;
+    border-top-color: #f9deee;
     border-bottom: 0;
     border-left: 0;
     margin-left: -22px;

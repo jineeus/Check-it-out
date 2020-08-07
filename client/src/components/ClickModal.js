@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Rate } from 'antd';
 import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 
 const ClickModalWrapper = styled.div`
   position: absolute;
