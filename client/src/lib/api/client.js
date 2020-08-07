@@ -2,7 +2,17 @@ import axios from "axios";
 
 const client = axios.create();
 
-client.defaults.headers.common['auth-token'] = JSON.stringify(JSON.parse(localStorage.getItem('userInfo')).userToken);
+if(localStorage.getItem('userInfo')){
+  client.defaults.headers.common["auth-token"] = JSON.stringify(
+    JSON.parse(localStorage.getItem("userInfo")).userToken
+  );
+}else {
+  localStorage.setItem('userInfo', JSON.stringify({
+    userToken: null,
+    userInfo: null
+  }));
+}
+  
 
 /*
   글로벌 설정 예시:

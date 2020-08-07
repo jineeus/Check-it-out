@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyBookList from "../components/MyBookList";
 import { uuid } from "uuidv4";
-import { bookListLoad } from '../lib/api/auth';
+import { bookListLoad } from '../lib/api/commonAPI';
 import { useDispatch } from "react-redux";
 import { currentBookList } from '../modules/currentBookList';
 
@@ -69,7 +69,7 @@ const MyLibraryForm = () => {
           </section> 
         </React.Fragment>
       }
-      {!myLibraryBookLists && <span className="noBookMessage">작성한 독후감이 없습니다</span>}
+      {!myLibraryBookLists && <span className="noBookMessage">책을 등록해주세요 !</span>}
     </MyLibraryFormWrapper>
   );
 };
