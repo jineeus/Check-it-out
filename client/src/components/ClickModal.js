@@ -57,7 +57,7 @@ const ClickModal = ({ modalClose, bookRateSave, clickBookInfoModal }) => {
     <ClickModalWrapper>
       <img className="modalBookImg" src={clickBookInfoModal.bookImage} />
       <strong className="modalBookTitle">{clickBookInfoModal.bookTitle}</strong>
-      <span className="bookRateMsg">평점 남기기</span>
+      <span className="bookRateMsg">평점 남기기</span>
       <Rate onChange={handleChange} />
       <div className="btnSection">
         <button onClick={() => modalClose()}>취소</button>

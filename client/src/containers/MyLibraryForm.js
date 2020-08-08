@@ -47,6 +47,7 @@ const MyLibraryForm = () => {
   }, []);
 
   const bookListClickHandler = (item) => {
+    console.log(myLibraryBookLists)
     dispatch(currentBookList({
       bookUuid: item.bookUuid,
       bookTitle: item.bookTitle,
