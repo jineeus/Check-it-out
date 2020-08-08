@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { KAKAO_API_KEY } from '../config/kakaoAPI';
 import axios from 'axios';
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import SearchBookList from '../components/SearchBookList';
 import SearchLoading from '../components/SearchLoading';
 import ClickModal from '../components/ClickModal';
@@ -188,7 +188,7 @@ const SearchForm = () => {
   const modalClose = () => {
     dispatch(
       bookSave({
-        bookUuid: uuid(),
+        bookUuid: uuidv4(),
         bookTitle: clickBookInfoModal.clickBook.bookTitle,
         bookAuthor: clickBookInfoModal.clickBook.bookAuthor,
         bookImage: clickBookInfoModal.clickBook.bookImage,
@@ -225,7 +225,7 @@ const SearchForm = () => {
           bookLists.map((el) => (
             <SearchBookList
               bookList={el}
-              key={uuid()}
+              key={uuidv4()}
               clickedBook={clickedBook}
             />
           ))

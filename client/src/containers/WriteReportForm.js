@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReportList from '../components/ReportList';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { Rate } from "antd";
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -184,7 +184,7 @@ const WriteReportForm = ({ history }) => {
 
   const NewReportSaveHandler = () => {
     let reportMemo = document.querySelector('.writeReportInput').value;
-    let reportUuid = uuid();
+    let reportUuid = uuidv4();
     newReportSave({ bookUuid, reportUuid, reportMemo })
     .then(data => setWriteReportClicked(false));
   }
@@ -242,7 +242,7 @@ const WriteReportForm = ({ history }) => {
       <section className="reportLists">
         {bookReport.length !== 0 && !writeReportClicked ? (
           bookReport.map((el) => <ReportList 
-              reportList={el} key={uuid()} 
+              reportList={el} key={uuidv4()} 
               reportSaveHandler={reportSaveHandler}
               deleteReportHandler={deleteReportHandler}
             />)

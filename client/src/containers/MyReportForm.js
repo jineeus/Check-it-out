@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyBookList from '../components/MyBookList';
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { currentBookList } from '../modules/currentBookList';
 import { theBooksWithReport } from "../lib/api/commonAPI";
@@ -60,7 +60,7 @@ const MyReportForm = () => {
       {BooksWithReport ? (
           <React.Fragment>
             <section className="reportListStack">
-              {BooksWithReport.map((el) => <MyBookList myLibrary={el} bookListClickHandler={bookListClickHandler} key={uuid()} />)}
+              {BooksWithReport.map((el) => <MyBookList myLibrary={el} bookListClickHandler={bookListClickHandler} key={uuidv4()} />)}
             </section>
           </React.Fragment>
         ):(

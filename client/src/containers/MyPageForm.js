@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { Avatar } from 'antd';
 import { FaBook } from 'react-icons/fa';
 import { useSelector } from "react-redux";
@@ -185,14 +185,14 @@ const MyPageForm = () => {
         {rankingClick === false && (
           <div className="showRankingLists">
             {howManyRate.map((el) => (
-              <BookList bookList={el} key={uuid()} clickedBook={clickedBook} />
+              <BookList bookList={el} key={uuidv4()} clickedBook={clickedBook} />
             ))}
           </div>
         )}
         {rankingClick && (
           <div className="showRankingLists">
             {howManyReport.map((el) => (
-              <BookList bookList={el} key={uuid()} clickedBook={clickedBook} />
+              <BookList bookList={el} key={uuidv4()} clickedBook={clickedBook} />
             ))}
           </div>
         )}

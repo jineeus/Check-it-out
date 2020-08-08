@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyBookList from "../components/MyBookList";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { bookListLoad } from '../lib/api/commonAPI';
 import { useDispatch, useSelector } from "react-redux";
 import { currentBookList } from '../modules/currentBookList';
@@ -58,21 +58,25 @@ const MyLibraryForm = () => {
 
   return (
     <MyLibraryFormWrapper>
-      <div className="totalLength">My Library ({myLibraryBookLists ? myLibraryBookLists.length : 0})</div>
-      {myLibraryBookLists &&
+      <div className="totalLength">
+        My Library ({myLibraryBookLists ? myLibraryBookLists.length : 0})
+      </div>
+      {myLibraryBookLists && (
         <React.Fragment>
           <section className="bookList">
             {myLibraryBookLists.map((el) => (
               <MyBookList
                 myLibrary={el}
-                key={uuid()}
+                key={uuidv4()}
                 bookListClickHandler={bookListClickHandler}
               />
             ))}
-          </section> 
+          </section>
         </React.Fragment>
-      }
-      {!myLibraryBookLists && <span className="noBookMessage">책을 등록해주세요 !</span>}
+      )}
+      {!myLibraryBookLists && (
+        <span className="noBookMessage">책을 등록해주세요 !</span>
+      )}
     </MyLibraryFormWrapper>
   );
 };
