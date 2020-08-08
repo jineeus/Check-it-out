@@ -4,12 +4,14 @@ import auth, { authSaga } from './auth';
 import bookSave, { saveSaga } from "./bookSave";
 import currentBookList from './currentBookList';
 import modalLoading from './modalBG';
+import getAllBooks from './getAllBooks';
 
 const rootReducer = combineReducers({
   auth,
   bookSave,
   currentBookList,
-  modalLoading
+  modalLoading,
+  getAllBooks
 });
 
 export function* rootSaga(){

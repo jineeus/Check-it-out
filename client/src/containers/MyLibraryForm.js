@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import MyBookList from "../components/MyBookList";
 import { uuid } from "uuidv4";
 import { bookListLoad } from '../lib/api/commonAPI';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { currentBookList } from '../modules/currentBookList';
+import { getAllBooks } from '../modules/getAllBooks';
 
 const MyLibraryFormWrapper = styled.div`
   width: 100%;
@@ -36,11 +37,13 @@ const MyLibraryForm = () => {
 
   const dispatch = useDispatch();
 
-  const [myLibraryBookLists, setMyLibraryBookLists] = useState(null);
+  // const [myLibraryBookLists, setMyLibraryBookLists] = useState(null);
+  const myLibraryBookLists = useSelector((state) => (state.getAllBooks.getAllBooks));
 
   useEffect(() => {
     bookListLoad()
-    .then(data => setMyLibraryBookLists(data.data))
+      .then((data) => dispatch(getAllBooks(data.data)))
+      // .then(data => setMyLibraryBookLists(data.data))
   }, []);
 
   const bookListClickHandler = (item) => {

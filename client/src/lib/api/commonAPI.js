@@ -46,3 +46,7 @@ export const bookDelete = ({ bookUuid }) =>
 // 독후감이 있는 책만 불러오기
 export const theBooksWithReport = () => 
   client.get("http://13.124.221.193:3002/report/theBooksWithReport");
+
+// 독후감 많은 순서로 정렬
+export const howManyWriteReport = () =>
+  client.get("http://13.124.221.193:3002/report/howManyWriteReport");

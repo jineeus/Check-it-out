@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Rate } from 'antd';
-import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
 
 const ClickModalWrapper = styled.div`
   position: absolute;
@@ -48,16 +47,7 @@ const ClickModalWrapper = styled.div`
   .btnSection > button + button {margin-left: 20px;}
 `;
 
-const ClickModal = ({ clickBook, modalClose, bookRateSave, clickBookInfoModal }) => {
-  const [rateValue, setRateValue] = useState(0);
-
-  const customIcons = {
-    1: <FrownOutlined />,
-    2: <FrownOutlined />,
-    3: <MehOutlined />,
-    4: <SmileOutlined />,
-    5: <SmileOutlined />,
-  };
+const ClickModal = ({ modalClose, bookRateSave, clickBookInfoModal }) => {
 
   const handleChange = (value) => {
     bookRateSave(value);
@@ -65,13 +55,13 @@ const ClickModal = ({ clickBook, modalClose, bookRateSave, clickBookInfoModal })
 
   return (
     <ClickModalWrapper>
-      <img className="modalBookImg" src={clickBookInfoModal.thumbnail} />
-      <strong className="modalBookTitle">{clickBookInfoModal.title}</strong>
+      <img className="modalBookImg" src={clickBookInfoModal.bookImage} />
+      <strong className="modalBookTitle">{clickBookInfoModal.bookTitle}</strong>
       <span className="bookRateMsg">평점 남기기</span>
       <Rate onChange={handleChange} />
       <div className="btnSection">
         <button onClick={() => modalClose()}>취소</button>
-        <button onClick={() => modalClose(rateValue)}>저장</button>
+        <button onClick={() => modalClose()}>저장</button>
       </div>
     </ClickModalWrapper>
   );

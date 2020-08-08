@@ -133,22 +133,32 @@ const SearchForm = () => {
     bookRate: 0
   });
 
-  const {bookTitle}  = useSelector((state) => (
-    state.bookSave.bookTitle
-  ));
-
   const callApi = (input) => {
-    axios.get(`https://dapi.kakao.com/v3/search/book?`, {
-      params: {
-        query: input,
-        size: 20,
-      },
-      headers: {
-        Authorization: `KakaoAK ${KAKAO_API_KEY}`, // 공통으로 요청 할 헤더
-      },
-    })
-      .then(res => setBookLists(res.data.documents))
-      .catch(e => console.log(e))
+    axios
+      .get(`https://dapi.kakao.com/v3/search/book?`, {
+        params: {
+          query: input,
+          size: 20,
+        },
+        headers: {
+          Authorization: `KakaoAK ${KAKAO_API_KEY}`, // 공통으로 요청 할 헤더
+        },
+      })
+      .then((res) => kakaoBookFilterFunc(res.data.documents))
+      .then((data) => setBookLists(data))
+      .catch((err) => console.log(err));
+  };
+
+  const kakaoBookFilterFunc = (data) => {
+    for (let i = 0; i < data.length; i++) {
+      data[i] = {
+        bookAuthor: data[i].authors[0],
+        bookContent: data[i].contents,
+        bookImage: data[i].thumbnail,
+        bookTitle: data[i].title,
+      };
+    }
+    return data;
   };
 
   const showInput = () => {
@@ -175,13 +185,13 @@ const SearchForm = () => {
     setClickBookInfoModal({clickBook: item});
   }
 
-  const modalClose = (rate = 0) => {
+  const modalClose = () => {
     dispatch(
       bookSave({
         bookUuid: uuid(),
-        bookTitle: clickBookInfoModal.clickBook.title,
-        bookAuthor: clickBookInfoModal.clickBook.authors,
-        bookImage: clickBookInfoModal.clickBook.thumbnail,
+        bookTitle: clickBookInfoModal.clickBook.bookTitle,
+        bookAuthor: clickBookInfoModal.clickBook.bookAuthor,
+        bookImage: clickBookInfoModal.clickBook.bookImage,
         bookRate: clickBookInfoModal.bookRate
       })
     );
@@ -224,7 +234,6 @@ const SearchForm = () => {
       {clickModal && (
         <div>
           <ClickModal
-            clickBook={clickedBook}
             clickBookInfoModal={clickBookInfoModal.clickBook}
             modalClose={modalClose}
             bookRateSave={bookRateSave}

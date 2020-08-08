@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import { Rate } from "antd";
 
 const BookListWrapper = styled.div`
   .bookImg {
@@ -15,7 +16,13 @@ const BookListWrapper = styled.div`
     box-sizing: border-box;
     text-align: left;
   }
-  .bookTitle {font-size: 15px; display: block}
+  .bookTitle {
+    font-size: 15px; 
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .bookAuthor {margin: 3% 0; display: block}
   .bookContents {
     overflow: hidden;
@@ -32,19 +39,21 @@ const BookListWrapper = styled.div`
 `;
 
 const BookList = ({ bookList, clickedBook}) => {
+  
   const [bookInfoConveyModal, setBookInfoConveyModal] = useState({
-    title: bookList.title,
-    authors: bookList.authors,
-    contents: bookList.contents,
-    thumbnail: bookList.thumbnail,
+    bookTitle: bookList.bookTitle,
+    bookAuthor: bookList.bookAuthor,
+    bookContent: bookList.bookContent,
+    bookImage: bookList.bookImage,
   })
   return (
     <BookListWrapper onDoubleClick={() => clickedBook(bookInfoConveyModal)}>
-      <img className="bookImg" src={bookList.thumbnail}/>
+      <img className="bookImg" src={bookList.bookImage}/>
       <div className="bookInfo">
-        <strong className="bookTitle">{bookList.title}</strong>
-        <span className="bookAuthor">{bookList.authors[0]}</span>
-        <p className="bookContents">{bookList.contents}</p>
+        <strong className="bookTitle">{bookList.bookTitle}</strong>
+        <span className="bookAuthor">{bookList.bookAuthor}</span>
+        <p className="bookContents">{bookList.bookContent}</p>
+        {bookList.bookRate && <Rate disabled defaultValue={bookList.bookRate} />}
       </div>
     </BookListWrapper>
   );

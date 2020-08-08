@@ -22,6 +22,9 @@ const WriteReportFormWrapper = styled.div`
     font-weight: 600;
     color: #f2b1b1;
     letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .bookThumbnail,
   .bookAuthors,

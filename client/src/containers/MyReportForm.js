@@ -35,12 +35,12 @@ const MyReportForm = () => {
 
   const dispatch = useDispatch();
 
-  const [theBooksWithReport, setTheBooksWithReport] = useState(null);
+  const [BooksWithReport, setBooksWithReport] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
     theBooksWithReport()
-      .then((data) => setTheBooksWithReport(data.data))
+      .then((data) => setBooksWithReport(data.data))
       .catch((err) => setError("작성한 독후감이 없습니다 !"));
   }, [])
 
@@ -56,11 +56,11 @@ const MyReportForm = () => {
   
   return (
     <MyReportFormWrapper>
-      <div className="reportTitle">My Report ({theBooksWithReport ? theBooksWithReport.length : 0})</div>
-      {theBooksWithReport ? (
+      <div className="reportTitle">My Report ({BooksWithReport ? BooksWithReport.length : 0})</div>
+      {BooksWithReport ? (
           <React.Fragment>
             <section className="reportListStack">
-              {theBooksWithReport.map((el) => <MyBookList myLibrary={el} bookListClickHandler={bookListClickHandler} key={uuid()} />)}
+              {BooksWithReport.map((el) => <MyBookList myLibrary={el} bookListClickHandler={bookListClickHandler} key={uuid()} />)}
             </section>
           </React.Fragment>
         ):(
